@@ -1,0 +1,16 @@
+.jumbotron {
+  margin-top: 0.5em;
+}
+
+.jumbotron1 {
+  margin-top: 1em;  
+  min-height: 600px;
+}
+
+.card-body {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  text-indent: 10px
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+}
+

@@ -1,0 +1,18 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+{%- extends "base.html" %}
+
+
+{% block content %}
+   <div class="container">
+      <div class="jumbotron">
+        <h1>Upload your data to start</h1>
+        </div>
+   <div class="col-md-12">
+    
+    {{ form.crsf_token }}
+    {{ wtf.quick_form(form)}}
+    
+
+   </div>
+{%- endblock %}

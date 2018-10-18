@@ -1,0 +1,3 @@
+data/*
+!data/MOCK_DATA.csv
+__pycache__
