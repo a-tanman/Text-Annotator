@@ -1,3 +1,6 @@
 data/*
 !data/MOCK_DATA.csv
 __pycache__
+venv/*
+tests/
+node_modules/

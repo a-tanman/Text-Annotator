@@ -1,20 +1,37 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+    utils module here to automatically render Flask's flashed messages in a
+    bootstrap friendly manner #}
+ {% import "bootstrap/utils.html" as utils %}
 {%- extends "base.html" %}
 
 {% block content %}
 
 <div class="container">
+
+    {%- with messages = get_flashed_messages(with_categories=True) %}
+    {%- if messages %}
+        <div class="row">
+        <div class="col-md-12">
+            {{utils.flashed_messages(messages)}}
+        </div>
+        </div>
+        {%- endif %}
+        {%- endwith %}
     <div class="jumbotron">
       <h3>The uploaded data has a total of {{ length }} rows.</h3>
       </div>
+      
  <div class="col-md-12">
 
     {{ form.crsf_token }}
     {{ wtf.quick_form(form)}}
 <div>
+    <br>
+    
+    {{ dataframe.to_html(classes="table table-striped") |safe }}
     <p></p>
-    {{ dataframe|safe }}
 </div>
    
 {%- endblock %}

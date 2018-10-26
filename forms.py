@@ -3,9 +3,14 @@ from wtforms.fields import *
 from wtforms.validators import Required, Email, DataRequired, ValidationError, Optional
 from flask import g
 
+class StartForm(FlaskForm):
+    
+    submit = SubmitField('Start')
 
 class SignupForm(FlaskForm):
-    name = TextField(u'Your name', validators=[Required()])
+    name = TextField('Please enter a unique key (e.g. name_id) to identify the data you are labelling :\
+    <h6> This is necessary so that you can manage multiple sets of data you may be labelling, and \
+    allows you to continue labelling even though your session has ended. </h6>', validators=[Required()])
 
     # Custom validator to check that file is csv
     def validate_csv(form, field):
@@ -14,13 +19,13 @@ class SignupForm(FlaskForm):
             
             raise ValidationError('Not a CSV file!')
 
-    sample_file = FileField(u'Your .csv file', validators=[Required(), validate_csv])
+    sample_file = FileField('.csv file for labelling :', validators=[Required(), validate_csv])
     
     # Uncomment if there are terms and conditions
     # eula = BooleanField(u'I have read the terms and conditions',
     #                    validators=[Required('You must agree to the T&C!')])
 
-    submit = SubmitField(u'Upload')
+    submit = SubmitField('Upload')
     
 
 class DisplayForm(FlaskForm):
@@ -34,13 +39,13 @@ class DisplayForm(FlaskForm):
             tup_list.append((val, val))
         self.sel_col.choices = tup_list
     
-    num_rows = SelectField(u'Sample a Number of Rows', choices = [(str(i), str(i)) for i in range(5,50,5)], validators = [Required()])
+    num_rows = SelectField('Sample a Number of Rows', choices = [(str(i), str(i)) for i in range(10,110,10)], validators = [Required()])
     
-    sample = SubmitField(u'Sample', validators=[Optional()])
+    sample = SubmitField('Sample', validators=[Optional()])
 
-    sel_col = SelectField(u'Select column to annotate')
-    labels = TextField(u'Type in label names separated by a \';\'')
+    sel_col = SelectField('<br>Select column to annotate')
+    labels = TextField('Type in label names separated by a \';\'')
       
-    annotate = SubmitField(u'Annotate', validators=[Optional()])  
+    annotate = SubmitField('Annotate', validators=[Optional()])  
 
     

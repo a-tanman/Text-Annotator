@@ -1,6 +1,7 @@
 {# This simple template derives from ``base.html``. See ``base.html`` for
    more information about template inheritance. #}
 {%- extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {# Loads some of the macros included with Flask-Bootstrap. We are using the
    utils module here to automatically render Flask's flashed messages in a
@@ -25,11 +26,11 @@
     <div class="jumbotron">
       <h1>Welcome to Text-Annotator</h1>
       <p>This application helps you annotate and label your textual data.</p>
-<!--      <p>
-        <a class="btn btn-lg btn-default" role="button"
-           href="http://pythonhosted.org/Flask-Bootstrap" >Show docs</a>
+      <p>
+      {{wtf.quick_form(form, novalidate=True)}}
       </p>
-    -->
+          
+      
     </div>
    </div>
 {%- endblock %}
