@@ -23,11 +23,21 @@
 
     <div class = "text-center">
     
+    
+
     {{ form.crsf_token }}
 
     
     {{ wtf.quick_form(form)}}
+    
     <br>
+
+    {{ goto_form.crsf_token }}
+    {{ wtf.quick_form(goto_form)}}
+    <br>
+    {{ add_label_form.crsf_token }}
+    {{ wtf.quick_form(add_label_form)}}
+    
     <br>
     {% if show_link %}
     <a href="/get_result/" target = "blank"><button class='btn btn-default'>Download Labelled File</button></a>

@@ -48,4 +48,25 @@ class DisplayForm(FlaskForm):
       
     annotate = SubmitField('Annotate', validators=[Optional()])  
 
-    
+class GotoRowForm(FlaskForm):
+
+    def __init__(self, nrow = None, **kw):
+        super(GotoRowForm, self).__init__(**kw)
+
+        # Create list of tuples for the SelectField
+        row_list = []
+        for i in range(nrow):
+            
+            row_list.append((i, i))
+
+        self.sel_row.choices = row_list
+
+    sel_row = SelectField('Select Row Number:', coerce = int, validators = None)
+
+    row_selected = SubmitField('Go To Selected Row')
+
+class AddLabelForm(FlaskForm):
+
+    new_lab = TextField('Type any additional label names, one at a time.', default = "")
+
+    add_lab = SubmitField('Add Labels')

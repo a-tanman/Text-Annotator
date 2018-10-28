@@ -99,9 +99,14 @@ def annotate_data():
     
     filename = request.args['f_name']
     colname = request.args['colname']
-    col_label = colname + '_label'
+    col_label = colname + '_label'     
     labels = request.args['labels'].split(';')
-        
+
+    if session.get('additional_labels') is not None:
+        labels = (request.args['labels'] + ';' + session['additional_labels']).split(';')
+        print(labels)
+
+
     file_path = os.path.join(current_app.root_path, 'data', filename) # Note that a 'data' folder must be created
     res_file = os.path.join(current_app.root_path, 'data', session['user_id'] + '_' + col_label + '_' + filename)
     session['res_file_link'] = res_file
@@ -126,12 +131,24 @@ def annotate_data():
 
     form = AnnotateForm()
 
-    if form.validate_on_submit():
-        
+    goto_form = GotoRowForm(nrow = file_len)
+
+    add_label_form = AddLabelForm()
+
+    label_clicked = False
+    for key, value in form.data.items():
+            if value is True:
+                label_clicked = True
+
+    # This is executed if the user clicks on one of the label buttons
+    if form.validate_on_submit() and label_clicked:
+        print ('form is being submitted')
         cur_count = session['counter']
         row = df.iloc[[session['counter']]]
         for key, value in form.data.items():
             if value is True:
+                
+                # Label row with button clicked 
                 row[col_label] = key
         
         with open(res_file, 'a') as f:
@@ -143,14 +160,26 @@ def annotate_data():
             row.to_csv(f, header=print_header)
 
         session['counter'] += 1
+        form.validate_on_submit
     
+    
+    # This is executed if the user selects a row number
+    if goto_form.validate_on_submit() and goto_form.row_selected.data:
+        session['counter'] = goto_form.sel_row.data
+        print('goto_form is being submitted')
+        print (session['counter'])
+
+    if add_label_form.validate_on_submit() and add_label_form.add_lab.data:
+    
+        session['additional_labels'] = session['additional_labels'] + ';' + add_label_form.new_lab.data
+        print(session['additional_labels'])
     # Show text for labelling within jumbotron
     text = df.at[session['counter'], colname]
 
     if session['counter'] >= 1:
         res_download_link = True
     
-    return render_template('annotate.html', form = form, text_string = text, row_num = session['counter'], total_rows = file_len, show_link = res_download_link)
+    return render_template('annotate.html', form = form, goto_form = goto_form, add_label_form = add_label_form, text_string = text, row_num = session['counter'], total_rows = file_len, show_link = res_download_link)
 
 
 
