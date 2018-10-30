@@ -9,8 +9,8 @@ class StartForm(FlaskForm):
 
 class SignupForm(FlaskForm):
     name = TextField('Please enter a unique key (e.g. name_id) to identify the data you are labelling :\
-    <h6> This is necessary so that you can manage multiple sets of data you may be labelling, and \
-    allows you to continue labelling even though your session has ended. </h6>', validators=[Required()])
+    <h6> This is necessary so that you can manage multiple sets of data you may be labelling (write this key down!).\
+    You can also enter a previous unique key and upload the same original data to continue a previous labelling effort. </h6>', validators=[Required()])
 
     # Custom validator to check that file is csv
     def validate_csv(form, field):
@@ -27,6 +27,7 @@ class SignupForm(FlaskForm):
 
     submit = SubmitField('Upload')
     
+# This form is used on the display data page to allow the user to sample a number of rows and also input different labels
 
 class DisplayForm(FlaskForm):
 
@@ -48,6 +49,7 @@ class DisplayForm(FlaskForm):
       
     annotate = SubmitField('Annotate', validators=[Optional()])  
 
+# This form creates a dropdown list to select a new row to annotate
 class GotoRowForm(FlaskForm):
 
     def __init__(self, nrow = None, **kw):
@@ -61,10 +63,11 @@ class GotoRowForm(FlaskForm):
 
         self.sel_row.choices = row_list
 
-    sel_row = SelectField('Select Row Number:', coerce = int, validators = None)
+    sel_row = SelectField('Select Row Number:', default = 0, coerce = int, validators = None)
 
     row_selected = SubmitField('Go To Selected Row')
 
+# This form is used to add labels from the annotation page
 class AddLabelForm(FlaskForm):
 
     new_lab = TextField('Type any additional label names, one at a time.', default = "")
